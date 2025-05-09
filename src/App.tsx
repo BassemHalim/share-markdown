@@ -95,9 +95,20 @@ function App() {
       }
     };
 
-    window.addEventListener("hashchange", handleHashChange);
-    return () => window.removeEventListener("hashchange", handleHashChange);
-  }, []);
+        window.addEventListener("hashchange", handleHashChange);
+        const handleSave = (e: KeyboardEvent) => {
+            if (e.ctrlKey && e.key === "s") {
+                e.preventDefault();
+                handleCopy();
+            }
+        };
+        window.addEventListener("keydown", handleSave);
+
+        return () => {
+            window.removeEventListener("keydown", handleSave);
+            window.removeEventListener("hashchange", handleHashChange);
+        };
+    }, []);
 
   const handleMarkdownChange = useCallback(
     (value: string | undefined) => {
